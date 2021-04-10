@@ -28,7 +28,12 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "settings": {
+      "tabWidth": 4,
+      "singleQuote": true,
+      "trailingComma": "none"
+    }
   },
   "browserslist": {
     "production": [
