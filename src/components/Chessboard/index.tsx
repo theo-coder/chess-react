@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Tile } from "..";
 import "./Chessboard.scss";
 
@@ -43,6 +43,8 @@ for (let i = 0; i < 2; i++) {
 
 const Chessboard: React.FC = () => {
   const [activePiece, setActivePiece] = useState<HTMLElement>();
+  const chessboardRef = useRef<HTMLDivElement>(null);
+
   let board = [];
   const grabPiece = (e: React.MouseEvent) => {
     const el = e.target as HTMLElement;
@@ -55,9 +57,21 @@ const Chessboard: React.FC = () => {
     }
   };
   const movePiece = (e: React.MouseEvent) => {
-    if (activePiece) {
-      activePiece.style.left = `${e.clientX - 50}px`;
-      activePiece.style.top = `${e.clientY - 50}px`;
+    const chessboard = chessboardRef.current;
+
+    if (activePiece && chessboard) {
+      const minX = chessboard.offsetLeft - 25;
+      const minY = chessboard.offsetTop - 25;
+      const maxX = chessboard.offsetLeft + chessboard.clientWidth - 75;
+      const maxY = chessboard.offsetTop + chessboard.clientHeight - 75;
+
+      const x = e.clientX - 50;
+      const y = e.clientY - 50;
+
+      activePiece.style.left =
+        x < minX ? `${minX}px` : x > maxX ? `${maxX}px` : `${x}px`;
+      activePiece.style.top =
+        y < minY ? `${minY}px` : y > maxY ? `${maxY}px` : `${y}px`;
     }
   };
   const releasePiece = (e: React.MouseEvent) => {
@@ -81,6 +95,7 @@ const Chessboard: React.FC = () => {
       onMouseDown={grabPiece}
       onMouseUp={releasePiece}
       id="chessboard"
+      ref={chessboardRef}
     >
       {board}
     </div>
