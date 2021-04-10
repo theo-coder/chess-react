@@ -1,11 +1,13 @@
-import React from 'react';
+import React from "react";
+import { Chessboard } from "./components";
+import "./App.scss";
 
 const App: React.FC = () => {
   return (
-    <div className="App">
-      salut
+    <div id="app">
+      <Chessboard />
     </div>
   );
-}
+};
 
 export default App;
