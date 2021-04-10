@@ -5,17 +5,4 @@
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8, 1fr);
-
-  .tile {
-    width: 100px;
-    height: 100px;
-  }
-
-  .btile {
-    background-color: #779556;
-  }
-
-  .wtile {
-    background-color: #dbecd0;
-  }
 }
