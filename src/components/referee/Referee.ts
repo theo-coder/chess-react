@@ -122,6 +122,25 @@ export default class Referee {
           }
         }
         return false;
+      case PieceType.KNIGHT:
+        if (
+          (previousPosition.y === nextPosition.y - 2 && previousPosition.x === nextPosition.x - 1) ||
+          (previousPosition.y === nextPosition.y - 2 && previousPosition.x === nextPosition.x + 1) ||
+          (previousPosition.y === nextPosition.y - 1 && previousPosition.x === nextPosition.x - 2) ||
+          (previousPosition.y === nextPosition.y - 1 && previousPosition.x === nextPosition.x + 2) ||
+          (previousPosition.y === nextPosition.y + 2 && previousPosition.x === nextPosition.x - 1) ||
+          (previousPosition.y === nextPosition.y + 2 && previousPosition.x === nextPosition.x + 1) ||
+          (previousPosition.y === nextPosition.y + 1 && previousPosition.x === nextPosition.x - 2) ||
+          (previousPosition.y === nextPosition.y + 1 && previousPosition.x === nextPosition.x + 2)
+        ) {
+          if (!this.tileIsOccupied(nextPosition.x, nextPosition.y, boardState)) {
+            return true
+          }
+          if (this.tileIsOccupiedByOpponent(nextPosition.x, nextPosition.y, boardState, team)) {
+            return true
+          }
+        }
+        return false;
       default:
         console.log("piece not in switch");
         break;
