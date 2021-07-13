@@ -1,0 +1,35 @@
+version: "3"
+
+services: 
+    reverse-proxy:
+        container_name: "${DOMAIN_NAME}-reverse-proxy"
+        restart: unless-stopped
+        image: traefik:2.4
+        command: 
+            - --api.insecure=true
+            - --entrypoints.web.address=:80
+            - --providers.docker=true
+            - --providers.docker.exposedbydefault=false
+        ports:
+            - "80:80"
+            - "8080:8080"
+        volumes: 
+            - /var/run/docker.sock:/var/run/docker.sock
+    
+    react:
+        container_name: "${DOMAIN_NAME}-react"
+        stdin_open: true
+        tty: true
+        ports: 
+            - "3000:3000"
+        build: .
+        volumes: 
+            - "./:/app"
+            - "/app/node_modules"
+        env_file: 
+            - .env
+        labels: 
+            - "traefik.enable=true"
+            - "traefik.http.routers.${DOMAIN_NAME}.rule=Host(`${DOMAIN_NAME}.localhost`)"
+            - "traefik.http.routers.${DOMAIN_NAME}.entrypoints=web"
+            - "traefik.http.services.${DOMAIN_NAME}.loadbalancer.server.port=3000"
